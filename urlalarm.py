@@ -53,15 +53,15 @@ def process_input(input_dict):
             ampm_str = input_dict.time[1].lower()
             time_split = input_dict.time[0].split(":")
         else:
-            ampm_str = input_dict.time[-2:]
-            time_split = input_dict.time[:-2]
+            ampm_str = input_dict.time[0][-2:].lower()
+            time_split = input_dict.time[0][:-2].split(":")
         if ampm_str == "am":
             hour = int(time_split[0])
         elif ampm_str == "pm":
             hour = (int(time_split[0]) + 12) % 24 # catches 12:00AM = 00:00
         minute = int(time_split[1])
         if len(time_split) > 2:
-            second = time_split[2]
+            second = int(time_split[2])
         else:
             second = 0
     elif input_dict.clock == "24h":
@@ -79,9 +79,8 @@ def process_input(input_dict):
         return # TODO: handle error safely
 
     target_datetime = datetime.datetime(year=year, month=month, day=day,
-                                         hour=hour, minute=minute,
-                                         second=second,
-                                         tzinfo=datetime.datetime.now().tzinfo)
+                                        hour=hour, minute=minute,
+                                        second=second)
     return target_datetime
 
 def get_delay(target_datetime):
